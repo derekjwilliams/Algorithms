@@ -2,7 +2,7 @@
 // see https://youtu.be/09_LlHjoEiY?t=1400s
 // github for the tutorial https://github.com/williamfiset/algorithms
 
-/* simple JS implementation first, then go to full functional */
+/* simple JS implementation first */
 
 class Stack {
   constructor() {
