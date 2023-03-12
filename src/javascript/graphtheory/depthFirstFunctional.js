@@ -3,7 +3,7 @@
 // github for the tutorial https://github.com/williamfiset/algorithms
 
 /* simple JS implementation first, with functional stack implementation */
-
+import { stackPeek, stackPop, stackPush, stackGetIterator } from "./dataStructures/stackFunctional.js";
 class Edge {
   /** @constructor
   * @param {number} from 
@@ -15,37 +15,6 @@ class Edge {
         this.to = to;
         this.cost = cost;
       }
-  }
-  
-  //stack implementation from here https://non-traditional.dev/converting-object-oriented-code-to-functional-in-javascript-f3d50cd06d93
-  export function peek(head) {
-    return head?.value;
-  }
-  
-  export function pop(head) {
-    const safeNode = head ?? {};
-    debugger
-    return safeNode.next;
-  }
-  
-  export function push(head) {
-    return (value) => {
-      const node = {
-        value,
-        next: head,
-      };
-      return node;
-    };
-  }
-  
-  export function getIterator(head) {
-    return (function* () {
-      let safeNode = head ?? {};
-      while (safeNode.value) {
-        yield safeNode.value;
-        safeNode = safeNode.next ?? {};
-      }
-    })();
   }
   
   /**
@@ -60,59 +29,46 @@ class Edge {
     const visited = new Array(vertexCount)
     let stack;
   
-    stack = push(stack)(start); 
+    // push the start vertex onto the stack
+    stack = stackPush(stack)(start); 
     // Start by visiting the starting vertex
     visited[start] = true;
     while (stack !== undefined) { // while stack is not empty
-      const vertex = peek(stack)
-      stack = pop(stack); // remove the start from the stack
-      count++;
+      const vertex = stackPeek(stack)
+      stack = stackPop(stack)
+      count++
       const edges = graph.get(vertex);
       if (edges != null) {
         edges.forEach((edge) => {
+          // if the edge.to vertex is not in the array of visited then push onto the stack, and set to true in the visited array
           if (!visited[edge.to]) {
-            stack = push(stack)(edge.to);
+            stack = stackPush(stack)(edge.to);
             visited[edge.to] = true;
           }
-        });
+        })
       }
     }
-    debugger;
-    return count;
+    return count
   }
   //example
   /**
-   * Helper method to setup graph
+   * Setup graph, by adding directed edges
    * @param {Map<number, Array<Edge>>} graph 
    * @param {number} from
    * @param {number} to
-   * @param {number} cost ??
+   * @param {number} cost
    */
   function addDirectedEdge(graph, from, to, cost) {
-    //console.log(from, to, cost)
-    let list = graph.get(from);
-    if (list === undefined) {
-      list = new Array(); // array of edges
-      graph.set(from, list);
+    let edges = graph.get(from);
+    if (edges === undefined) {
+      edges = new Array(); // array of edges
+      graph.set(from, edges);
     }
-    list.push(new Edge(from, to, cost));
+    edges.push(new Edge(from, to, cost));
   }
   
   function run() {
-  // Create a fully connected graph, ascii art sucks
-  
-  //           (v0)
-  //           /  \
-  //         4/    \5
-  //         /      \
-  //        *        *
-  //       (v1)----*(v2)----|   (4)
-  //         \  -2  / *_____|
-  //         6\    /1    10
-  //           \  /
-  //            **
-  //           (v3)
-  //            
+  // Create a fully connected graph, ascii art sucks, see README.md for a nice mermaid diagram of the graph
     let graph = new Map();
     const numberOfVertices = 5;
     addDirectedEdge(graph, 0, 1, 4);   // vertex 0 to vertex 1 with cost of 4
