@@ -21,7 +21,7 @@ class Edge {
    * Perform a depth first search on a graph with n vertices from a starting point to count the number of vertices in a given component
    * @param {Map<number, Array<Edge>>} graph 
    * @param {number} start
-   * @param {number} vertexCount ??
+   * @param {number} vertexCount
    */
   function depthFirstSearch(graph, start, vertexCount) {
   

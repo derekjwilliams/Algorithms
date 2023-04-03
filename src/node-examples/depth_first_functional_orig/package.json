@@ -1,0 +1,16 @@
+{
+  "name": "@derekjwilliams/depth_first_functional",
+  "version": "1.0.0",
+  "description": "Depth First Graph Algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/*.js"
+  },
+  "keywords": [
+    "Graph",
+    "Algorithms",
+    "Functional"
+  ],
+  "author": "Derek Williams",
+  "license": "MIT"
+}
